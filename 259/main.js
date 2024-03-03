@@ -148,7 +148,8 @@ function startGame() {
         height: 50,
         xVelocity: 0,
         yVelocity: 0,
-        slowTimer: 0
+        slowTimer: 0,
+        grounded: false
     }
 
     shovel = {
@@ -203,7 +204,9 @@ function gameKeyDown(key) {
             snowBall.active = true;
             break;
         case ' ':
-            player.yVelocity = -5;
+            if (player.grounded) {
+                player.yVelocity = -5;
+            }
             break;
     }
 }
@@ -287,8 +290,10 @@ function updatePlayer() {
     }
 
     // Collission
+    player.grounded = false;
     if (player.y + player.height > ground.y) {
         player.y = ground.y - player.height - 1;
+        player.grounded = true;
     }
     if (intersects(player.x, player.y, player.width, player.height, shovel.x, shovel.y, shovel.width, shovel.height)) {
         ground.snowHeight = 0;
